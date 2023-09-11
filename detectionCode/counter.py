@@ -93,4 +93,4 @@ def count(limits, classType, cap, mask):
 
 if __name__ == '__main__':
     limits = [77, 520, 649, 520]
-    count(limits,"car",cv2.VideoCapture("cars.mp4"),cv2.imread("../mask.png"))
+    count(limits,"car", cv2.VideoCapture("cars.mp4"), cv2.imread("../images/mask.png"))

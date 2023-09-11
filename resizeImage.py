@@ -31,14 +31,12 @@ def resize(inputImagepath, scaleNumberWidth, scaleNumberHeight):
     # Close the image file (optional but recommended)
     image.close()
 
-    print(f"Image resized and saved as {output_image_path}")
-
 originalWidth = cv2.imread("firstFrame.png").shape[1]
-maskWidth = cv2.imread("mask.png").shape[1]
+maskWidth = cv2.imread("images/mask.png").shape[1]
 widthscale = originalWidth/maskWidth
 
 originalHeight = cv2.imread("firstFrame.png").shape[0]
-maskHeight = cv2.imread("mask.png").shape[0]
+maskHeight = cv2.imread("images/mask.png").shape[0]
 heightscale = originalHeight/maskHeight
 
-resize("mask.png", widthscale, heightscale)
+resize("images/mask.png", widthscale, heightscale)

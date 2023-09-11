@@ -1,13 +1,12 @@
 import cv2
 from kivy.uix.label import Label
-from kivy.uix.image import Image
 from kivy.uix.popup import Popup
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivymd.app import MDApp
-from drawMask import MyCanvas
-from drawPassingLine import *
-import drawPassingLine
-from resizeImage import resize
+from workingOnAppv9.utils.drawMask import MyCanvas
+from workingOnAppv9.utils.drawPassingLine import *
+from workingOnAppv9.utils import drawPassingLine
+from workingOnAppv9.resizeImage import resize
 from detectionCode import counter
 
 
@@ -38,10 +37,11 @@ class HomePage(Screen):
             print(f"limits: {ProgramVars.limits}")
             print(f"Detectio Object {ProgramVars.detectionObject}")
             print(f"Video Path {ProgramVars.detectionVideoPath}")
-            cv2.imshow("mask",cv2.imread("mask.png"))
+            cv2.imshow("mask", cv2.imread("images/mask.png"))
             for i, each in enumerate(ProgramVars.limits):
                 ProgramVars.limits[i] = int(each)
-            count = counter.count(ProgramVars.limits, ProgramVars.detectionObject, cv2.VideoCapture(ProgramVars.detectionVideoPath), cv2.imread("mask.png"))
+            count = counter.count(ProgramVars.limits, ProgramVars.detectionObject, cv2.VideoCapture(ProgramVars.detectionVideoPath), cv2.imread(
+                "images/mask.png"))
             self.show_popup(Label(text=f"You had {count} {ProgramVars.detectionObject} pass the line"))
         else:
             self.show_popup(Label(text="Please make sure you selected\n select a video, detection object,\n and draw a mask and passing line"))
@@ -108,14 +108,14 @@ class AddPassingPoint(Screen):
         else:
 
             firstFrame = cv2.imread("firstFrame.png")
-            mask = cv2.imread("mask.png")
+            mask = cv2.imread("images/mask.png")
 
             width = firstFrame.shape[1] / mask.shape[1]
             height = firstFrame.shape[0] / mask.shape[0]
 
             resize('mask.png', width, height)
 
-            img = cv2.bitwise_and(cv2.imread("firstFrame.png"), cv2.imread("mask.png"))
+            img = cv2.bitwise_and(cv2.imread("firstFrame.png"), cv2.imread("images/mask.png"))
             cv2.imwrite("both.png", img)
             self.ids.drawPassing.clear_widgets()
             drawPassing = LineDrawingAppWidget("both.png")
