@@ -1,6 +1,6 @@
 import cv2
-from kivy.uix.image import Image
 from kivy.uix.label import Label
+from kivy.uix.image import Image
 from kivy.uix.popup import Popup
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivymd.app import MDApp
@@ -16,18 +16,6 @@ class ProgramVars():
     detectionVideoPath=None
     firstFrame=None
     limits = None
-    def show_popup(self, content):
-        # Create a pop-up window
-        # content = Label(text=f"You had {num} {detetction} pass the line")
-        popup = Popup(title="Popup Example", content=content, size_hint=(None, None), size=(500, 500))
-
-        # Add a button to close the pop-up
-        close_button = Button(text="Close")
-        close_button.bind(on_press=popup.dismiss)
-        content.add_widget(close_button)
-
-        # Open the pop-up
-        popup.open()
 
 class WindowManager(ScreenManager):
     pass
@@ -53,12 +41,13 @@ class HomePage(Screen):
             cv2.imshow("mask",cv2.imread("mask.png"))
             for i, each in enumerate(ProgramVars.limits):
                 ProgramVars.limits[i] = int(each)
-
-            num = counter.count(ProgramVars.limits, ProgramVars.detectionObject, cv2.VideoCapture(ProgramVars.detectionVideoPath), cv2.imread("mask.png"))
-            self.show_popup(Label(text=f"You had {num} {ProgramVars.detectionObject} pass the line"))
-            print(f"Num in main: {num}")
+            count = counter.count(ProgramVars.limits, ProgramVars.detectionObject, cv2.VideoCapture(ProgramVars.detectionVideoPath), cv2.imread("mask.png"))
+            self.show_popup(Label(text=f"You had {count} {ProgramVars.detectionObject} pass the line"))
         else:
-            self.show_popup(Label(text=f"Please make sure you have a video, \ndetection object,and passing line created."))
+            self.show_popup(Label(text="Please make sure you selected\n select a video, detection object,\n and draw a mask and passing line"))
+
+
+
 
 class ChooseVideo(Screen):
     selected_video_path = ""

@@ -2,11 +2,11 @@ from ultralytics import YOLO
 import cv2
 import cvzone
 import math
-from workingOnAppv7.detectionCode.sort import *
+from workingOnAppv9.detectionCode.sort import *
 
 
 
-model = YOLO("../Yolo-Weights/yolov8l.pt")
+model = YOLO("../Yolo-Weights/yolov8n.pt")
 
 classNames = ["person", "bicycle", "car", "motorbike", "aeroplane", "bus", "train", "truck", "boat",
               "traffic light", "fire hydrant", "stop sign", "parking meter", "bench", "bird", "cat",
@@ -69,28 +69,28 @@ def count(limits, classType, cap, mask):
             for result in resultsTracker:
                 x1,y1,x2,y2,ID = result
                 x1, y1, x2, y2 = int(x1),int(y1),int(x2),int(y2)
-                # print(result)
+                print(result)
                 w, h = x2 - x1, y2 - y1
                 cvzone.cornerRect(img, (x1, y1, w, h), l=10, rt=2,colorR=(255,0,255))
                 # cvzone.putTextRect(img, f'{int(ID)}', (max(0, x1), max(35, y1)), scale=2, thickness=3, offset=10)
 
                 cx,cy = x1+w//2,y1+h//2
-                # cv2.circle(img,(cx,cy),5,(255,0,255),cv2.FILLED)
+                cv2.circle(img,(cx,cy),5,(255,0,255),cv2.FILLED)
 
                 if limits[0] < cx < limits[2] and limits[1]-15<cy<limits[1]+15:
                     if totalCount.count(ID) == 0:
                         totalCount.append(ID)
                         cv2.line(img, (limits[0], limits[1]), (limits[2], limits[3]), (0, 255, 0), 5)
 
-            # cvzone.putTextRect(img, f'{classType} Count: {len(totalCount)}', (50,50))
+            cvzone.putTextRect(img, f'{classType} Count: {len(totalCount)}', (50,50))
 
-            #
-            # cv2.imshow("Image", img)
-            # cv2.imshow('imgregion',imgRegion)
-            # cv2.waitKey(1)
+
+            cv2.imshow("Image", img)
+            cv2.imshow('imgregion',imgRegion)
+            cv2.waitKey(1)
     except:
-        print("Num in old", len(totalCount))
         return len(totalCount)
+
 if __name__ == '__main__':
     limits = [77, 520, 649, 520]
     count(limits,"car",cv2.VideoCapture("cars.mp4"),cv2.imread("../mask.png"))
